@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tracking Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+
+        header {
+            background-color: #f8f8f8;
+            padding: 10px 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            height: 50px;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+
+        h1 {
+            display: inline;
+            font-size: 24px;
+            vertical-align: middle;
+        }
+
+        main {
+            margin: 50px auto;
+            width: 50%;
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+
+        input {
+            padding: 10px;
+            font-size: 16px;
+            margin-right: 10px;
+            width: 60%;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+
+        #trackingStatus {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="path/to/your-logo.png" alt="Your Logo" class="logo">
+        <h1>Tracking Page</h1>
+    </header>
+    <main>
+        <form id="trackingForm">
+            <label for="trackingNumber">Enter your tracking number:</label>
+            <input type="text" id="trackingNumber" name="trackingNumber" required>
+            <button type="submit">Track</button>
+        </form>
+        <div id="trackingStatus"></div>
+    </main>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const trackingStatus = document.getElementById('trackingStatus');
+
+            // Define your custom tracking statuses
+            const trackingData = {
+                '12345': 'Your package is in transit.',
+                '67890': 'Your package has been delivered.',
+                'ABCDE': 'Your package is out for delivery.',
+                // Add more tracking numbers and statuses here
+            };
+
+            // Function to get query parameters from the URL
+            function getQueryParams() {
+                const params = {};
+                const queryString = window.location.search.substring(1);
+                const queryArray = queryString.split('&');
+                queryArray.forEach(function(param) {
+                    const pair = param.split('=');
+                    params[pair[0]] = decodeURIComponent(pair[1]);
+                });
+                return params;
+            }
+
+            // Function to display tracking status
+            function displayTrackingStatus(trackingNumber) {
+                if (trackingData[trackingNumber]) {
+                    trackingStatus.textContent = trackingData[trackingNumber];
+                } else {
+                    trackingStatus.textContent = 'Tracking number not found. Please check and try again.';
+                }
+            }
+
+            // Check for trackingid in the query parameters
+            const params = getQueryParams();
+            if (params.trackingid) {
+                displayTrackingStatus(params.trackingid);
+            }
+
+            document.getElementById('trackingForm').addEventListener('submit', function(event) {
+                event.preventDefault();
+                const trackingNumber = document.getElementById('trackingNumber').value;
+                displayTrackingStatus(trackingNumber);
+            });
+        });
+    </script>
+</body>
+</html>
